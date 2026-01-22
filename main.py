@@ -2,6 +2,7 @@ from flask import Flask, render_template
 import requests
 import json
 from pathlib import Path
+import os
 
 BASE_PATH = Path(__name__).absolute().parent
 
@@ -10,6 +11,8 @@ app = Flask(__name__)
 
 def get_playerdata(stats_dir: str | None = None) -> list[dict]:
     # read files
+    if not stats_dir:
+        stats_dir = os.environ.get("MINECRAFT_STATS_PATH")
     if not stats_dir:
         stats_dir = BASE_PATH / "stats"
 
