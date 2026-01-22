@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/kory291/minecraft-leaderboard:latest
+        run: docker build -t ghcr.io/kory291/minecraft-leaderboard:latest .
 
       - name: Push Docker image
         run: |
