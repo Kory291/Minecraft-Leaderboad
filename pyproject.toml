@@ -1,0 +1,11 @@
+[project]
+name = "minecraft-leaderboard"
+version = "0.1.0"
+description = "Show just a simple dashboard with the stats data of a minecraft server"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.2",
+    "requests>=2.32.5",
+    "ruff>=0.14.13",
+]

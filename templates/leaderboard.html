@@ -1,0 +1,7 @@
+<!doctype html>
+<title>Minecraft playtime leaderboard</title>
+
+{% for person in persons %}
+<span>{{ person.name }}: {{ person.playtime_hours }} h {{ person.playtime_minutes }} m </span><br/>
+{% endfor %}
+
