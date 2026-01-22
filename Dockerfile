@@ -9,4 +9,4 @@ RUN --mount=from=ghcr.io/astral-sh/uv:latest,source=/uv,target=/bin/uv \
 
 USER dockeruser
 
-CMD [ "/app/.venv/bin/flask","--app","/app/main", "--host", "0.0.0.0", "run" ]
+CMD [ "/app/.venv/bin/flask","--app","/app/main", "run", "--host", "0.0.0.0" ]
