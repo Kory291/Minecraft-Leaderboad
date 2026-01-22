@@ -1,0 +1,26 @@
+name: Build Minecraft Leaderboard image
+
+on:
+  schedule:
+    - cron: 0 0 * * 0
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+  
+jobs:
+  buid:
+    runs-on: ubuntu-latest
+    container: docker:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t ghcr.io/kory291/minecraft-leaderboard:latest
+
+      - name: Push Docker image
+        run: |
+          echo ${{ secrets.REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin 
+          docker push ghcr.io/kory291/minecraft-leaderboard:latest
