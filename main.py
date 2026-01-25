@@ -5,9 +5,22 @@ from pathlib import Path
 import os
 
 BASE_PATH = Path(__name__).absolute().parent
+PLAYER_DATA_FILE = BASE_PATH / "player_data.json"
+
 
 app = Flask(__name__)
 
+def save_player_data(player_uuid_data: dict) -> None:
+    with open(PLAYER_DATA_FILE, "w", encoding="utf-8") as file:
+        json.dump(player_uuid_data, file)
+
+def get_saved_player_data() -> dict:
+    if not PLAYER_DATA_FILE.exists():
+        return {}
+    with open(PLAYER_DATA_FILE, "r", encoding="utf-8") as file:
+        return json.load(file)
+
+PLAYER_DATA = get_saved_player_data()
 
 def get_playerdata(stats_dir: str | None = None) -> list[dict]:
     # read files
@@ -20,9 +33,14 @@ def get_playerdata(stats_dir: str | None = None) -> list[dict]:
     print(stats_dir, flush=True)
     for stats_file in Path(stats_dir).glob("*.json"):
         # the name of the file contains the uuid
-        player_uuid = stats_file.name
+        player_uuid = stats_file.name.rstrip(".json")
         print(player_uuid, flush=True)
-        player_name = get_player_name_from_uuid(player_uuid.rstrip(".json"))
+        if player_uuid not in PLAYER_DATA:
+            player_name = get_player_name_from_uuid(player_uuid)
+            PLAYER_DATA[player_uuid] = player_name
+            save_player_data(PLAYER_DATA)
+        else:
+            player_name = PLAYER_DATA[player_uuid]
         with stats_file.open() as f:
             player_data = json.loads(f.read())
         play_time_ticks = (
@@ -56,7 +74,6 @@ def sort_player_list(player_list: list[dict]) -> list[dict]:
 
 def play_time_ticks_to_human_time(playtime_ticks: int) -> str:
     return f"{(playtime_ticks / 20 / 3600):.2f}"
-
 
 def get_player_name_from_uuid(player_uuid: str) -> str:
     response = requests.get(
