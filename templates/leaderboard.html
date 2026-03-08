@@ -1,7 +1,23 @@
-<!doctype html>
-<title>Minecraft playtime leaderboard</title>
-
-{% for person in persons %}
-<span>{{ person.name }}: {{ person.playtime_hours }} h {{ person.playtime_minutes }} m </span><br/>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Playtime Leaderboard</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Minecraft Playtime Leaderboard</h1>
+        <ul class="leaderboard">
+            {% for person in persons %}
+            <li class="leaderboard-item">
+                <span class="player-name">{{ person.name }}</span>
+                <span class="playtime">{{ person.playtime_hours }}h {{ person.playtime_minutes }}m</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
 
